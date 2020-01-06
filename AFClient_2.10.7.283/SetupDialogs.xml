@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SetupWizardXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="./SetupDialogs.xsd">
+  <!--       "{FFB43E28-15AA-4A82-8E79-A52DBC197F1B}" is upgrade code for 64-bit PI Data Archive MSI-->
+  <Module Id="{FFB43E28-15AA-4A82-8E79-A52DBC197F1B}">
+    <Service NameMask="pinetmgr" Action="WizardStops_WizardEnusuresStarted" Condition="ComponentInstalled" ConditionData="{E6EE4D3C-8DF7-4109-9A34-5AAC2C6652F1}" />
+    <Service NameMask="pimsgss" Action="WizardStops_WizardEnusuresStarted" Condition="ComponentInstalled" ConditionData="{ABA14D21-C9C5-4A55-8345-A797BC7C5756}" />
+    <!--Conditional restarts -->
+    <Service NameMask="pilicmgr" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{D000DAD4-3A6E-49CB-A2E7-53E4CEB03855}" />
+    <Service NameMask="pibasess" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{223A7BE0-3658-4291-8366-E7EB169535D1}" />
+    <Service NameMask="pisnapss" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{EF907B43-E78B-4BA7-8D9A-CF0FE24DB07A}" />
+    <Service NameMask="piarchss" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{4B1A3997-C2AF-4D95-9014-ADC5C9940AED}" />
+    <Service NameMask="piupdmgr" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{01756001-CA5A-46E6-8213-8B6432777D0B}" />
+    <Service NameMask="piaflink" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{5E5D46E4-D2F4-46AD-A5CE-981FB9603541}" />
+    <Service NameMask="pibackup" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{A0456F5C-CA49-4A3C-8A86-A57526F8BCCD}" />
+    <Service NameMask="pipeschd" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{4F520900-2BE8-4C18-BCC1-A11C7907D369}" />
+    <Service NameMask="pisqlss" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{2C118E51-408C-4862-A161-94C346AC4065}" />
+    <Service NameMask="pitotal" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{37997ECF-BED5-498A-8633-BC1379A8474E}" />
+    <Service NameMask="pialarm" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{7C73118F-0B86-4E42-89C2-5DC19C288E81}" />
+    <Service NameMask="pibatch" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{CA111109-AF4B-4B02-B010-DA229CF78F86}" />
+    <Service NameMask="random" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{ECEE5446-EAB2-4802-81DD-18C7B36D4B5B}" />
+    <Service NameMask="rmp_sk" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{2501D7ED-C428-4ACC-829C-2568CB98804D}" />
+    <Service NameMask="pibagen" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{C27F8171-6B88-4F73-9640-1CF0ED019F64}" />
+    <Service NameMask="piperfmon_basic*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{BA93481C-3E28-4DD2-9C93-7FB6D3DB17D6}" />
+    <Service NameMask="piperfmon*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{9020B0A2-616A-492F-9C5B-93803549613B}" />
+    <Service NameMask="piping_basic*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{F8F56B14-85E9-4961-A963-C4ABB3E00081}" />
+    <Service NameMask="piping*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{B1E30C9F-9134-45A1-A85F-28944A657818}" />
+    <Service NameMask="pisnmp_basic*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{A1A2DE26-C556-4386-8405-5031F05EE2FB}" />
+    <Service NameMask="pisnmp*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{434F8DC4-63D6-4A32-95F3-0C5D99F2A142}" />
+    <Service NameMask="PIIntStatus*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{D237A65A-E9D1-4CCD-B4EE-0C2E4BA8925A}" />
+    <Service NameMask="PITCPResp*" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="ComponentInstalled" ConditionData="{7BFA637B-160F-4E15-A923-BAA05E868288}" />
+    <!--                  {DDDFBDB7-D3B5-40EA-BE3C-5866DAB5AF58} is component guid for pictrdll.dll (32-bit)-->
+    <!--<InUseCheck Path="{DDDFBDB7-D3B5-40EA-BE3C-5866DAB5AF58}" Condition="None"/>-->
+    <!--                  {42D518AA-C7A0-47B4-8439-BE2AC16CAD6E} is component guid for pictrdll.dll (64-bit)-->
+    <!--<InUseCheck Path="{42D518AA-C7A0-47B4-8439-BE2AC16CAD6E}" Condition="None"/>-->
+    <!--              {C848D21E-EF38-4418-B7BF-4B30AFE2BDBE} is component guid for pigetmsg.exe (64-bit)-->
+    <InUseCheck Path="{C848D21E-EF38-4418-B7BF-4B30AFE2BDBE}" Condition="None" />
+    <!--              {172D8725-02AE-4032-8E9C-890F42112F17} is component guid for piconfig.exe (64-bit)-->
+    <InUseCheck Path="{172D8725-02AE-4032-8E9C-890F42112F17}" Condition="None" />
+    <!--              {814E7B8A-9371-4326-BEA1-2E42493084BA} is component guid for piartool.exe (64-bit)-->
+    <InUseCheck Path="{814E7B8A-9371-4326-BEA1-2E42493084BA}" Condition="None" />
+    <!--              {EC14E762-369D-40E6-AA58-A52700C77000} is component guid for pilistupd.exe (64-bit)-->
+    <InUseCheck Path="{EC14E762-369D-40E6-AA58-A52700C77000}" Condition="None" />
+    <!--              {2DB19BE1-B15E-45DD-A77A-675A84A89731} is component guid for apisnap.exe (64-bit)-->
+    <InUseCheck Path="{2DB19BE1-B15E-45DD-A77A-675A84A89731}" Condition="None" />
+    <!--              {04BB442F-AAD1-432F-8EA6-8C91A4EACE7C} is component guid for ipisql.exe (64-bit)-->
+    <InUseCheck Path="{04BB442F-AAD1-432F-8EA6-8C91A4EACE7C}" Condition="None" />
+    <!--              {F380229C-837C-4FC6-AA10-1D5FB1A0B93E} is component guid for pipetest.exe (64-bit)-->
+    <InUseCheck Path="{F380229C-837C-4FC6-AA10-1D5FB1A0B93E}" Condition="None" />
+    <!--              {1AEEEE4D-EF05-49EF-ACB7-6A94C5FA1917} is component guid for pisetpass.exe (64-bit)-->
+    <InUseCheck Path="{1AEEEE4D-EF05-49EF-ACB7-6A94C5FA1917}" Condition="None" />
+    <Variable Name="PI3INSTALLATIONPATH" MSIProperty="INSTALLDIR" Condition="None" />
+    <Variable Name="DEFAULTAFSERVER" MSIProperty="AF_SERVER" Condition="None" />
+    <Variable Name="PI3LICENSE" MSIProperty="LICDIR" Condition="None" />
+    <Variable Name="PI3ARCHIVEPATH" MSIProperty="ARCHIVEDATDIR" Condition="None" />
+    <Variable Name="PI3FUTUREARCHIVEPATH" MSIProperty="FUTUREARCHIVEDATDIR" Condition="None" />
+    <Variable Name="PI3EVENTQUEUEPATH" MSIProperty="EVENTQUEUEDIR" Condition="None" />
+    <Variable Name="PI3OFFLINEBACKUPDIR" MSIProperty="BACKUPDIR" Condition="None" />
+  </Module>
+  <!--       "PINS" corresponds to a setup wrapper dll named PINS.DLL-->
+  <Module Id="PINS">
+    <Service NameMask="pinetmgr" Action="MSIStops_WizardEnusuresStarted" Condition="None" />
+    <Service NameMask="pimsgss" Action="MSIStops_WizardEnusuresStarted" Condition="None" />
+    <!--              pigetmsg.exe (32-bit)-->
+    <InUseCheck Path="%pihome%\adm\pigetmsg.exe" Condition="None" />
+    <!--              pigetmsg.exe (64-bit)-->
+    <InUseCheck Path="%pihome64%\adm\pigetmsg.exe" Condition="OS64Bit" />
+    <Variable Name="PIHOME" MSIProperty="INSTALLDIR" Condition="None" />
+    <Variable Name="PIHOME64" MSIProperty="INSTALLDIR64" Condition="OS64Bit" />
+  </Module>
+  <Module Id="pisdk.msi">
+    <!--               pinetmgr is stopped only if the 32-bit pinetmgr is installed on a PINS node -->
+    <Service NameMask="pinetmgr" Action="WizardStops_WizardEnusuresStarted" Condition="ComponentInstalled" ConditionData="{3532B7B6-A9DA-11D4-B939-00C04F124D3D}" />
+    <!--               pimsgss always restarted because of pimdf.dat-->
+    <Service NameMask="pimsgss" Action="WizardStops_WizardEnusuresStarted" Condition="None" />
+    <Service NameMask="bufserv" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="None" />
+    <Service NameMask="pilogsrv" Action="WizardStops_WizardEnusuresStarted" Condition="None" />
+    <!--              {BC624D7A-D5FF-11D4-B95B-00C04F124D3D} is the component guid of "%PIHOME%\PISDK\pisdk.dll-->
+    <InUseCheck Path="{BC624D7A-D5FF-11D4-B95B-00C04F124D3D}" Condition="None" />
+    <!--              {BC624D7C-D5FF-11D4-B95B-00C04F124D3D} is the component guid of pisdkcommon.dll-->
+    <InUseCheck Path="{BC624D7C-D5FF-11D4-B95B-00C04F124D3D}" Condition="None" />
+    <!--              %systemroot%\system32\piapi32.dll or component {04518E17-AC6B-11D4-B948-00C04F124D3D} sometimes pre-dates Windows Installer components. Use full paths as well as component. -->
+    <InUseCheck Path="%systemroot%\system32\piapi32.dll" Condition="OS32Bit" />
+    <InUseCheck Path="{04518E17-AC6B-11D4-B948-00C04F124D3D}" Condition="None" />
+    <!--              {19510979-AE83-11D4-B948-00C04F124D3D} is the component guid of apisnap.exe-->
+    <InUseCheck Path="{19510979-AE83-11D4-B948-00C04F124D3D}" Condition="None" />
+    <!--              {DDDFBDB7-D3B5-40EA-BE3C-5866DAB5AF58} is the component guid of pictrdll.dll (32-bit)-->
+    <!--<InUseCheck Path="{DDDFBDB7-D3B5-40EA-BE3C-5866DAB5AF58}" Condition="None" />-->
+    <!--              {424CD3A0-D698-11D4-B95C-00C04F124D3D} is the component guid of pigetmsg.exe (32-bit)-->
+    <InUseCheck Path="{424CD3A0-D698-11D4-B95C-00C04F124D3D}" Condition="None" />
+    <!--              {01D71F35-B4E1-49A8-8588-E8196D0635B7} is the component guid of PISDKRegistry.dll (32-bit)-->
+    <InUseCheck Path="{01D71F35-B4E1-49A8-8588-E8196D0635B7}" Condition="None" />
+    <!--              {D071A5C5-B373-4A56-8BA1-6ADD624A91E2} is the component guid of sdktrace.dll (32-bit)-->
+    <InUseCheck Path="{D071A5C5-B373-4A56-8BA1-6ADD624A91E2}" Condition="None" />
+    <Variable Name="PIHOME" MSIProperty="INSTALLDIR" Condition="None" />
+    <Variable Name="DEFAULTPISERVER" MSIProperty="PI_SERVER" Condition="None" />
+  </Module>
+  <Module Id="pisdk_x64.msi">
+    <Service NameMask="pinetmgr" Action="WizardStops_WizardEnusuresStarted" Condition="PINSNode" />
+    <!--pimsgss always restarted because of pimdf.dat-->
+    <Service NameMask="pimsgss" Action="WizardStops_WizardEnusuresStarted" Condition="None" />
+    <!--              {65ED0A30-0728-4277-8DC6-E3325433B636} is the component guid of pisdk.dll (64-bit)-->
+    <InUseCheck Path="{65ED0A30-0728-4277-8DC6-E3325433B636}" Condition="None" />
+    <!--              {9C9A6763-6DFA-44C3-95F8-732C5778DA17} is the component guid of pisdkcommon.dll (64-bit)-->
+    <InUseCheck Path="{9C9A6763-6DFA-44C3-95F8-732C5778DA17}" Condition="None" />
+    <!--              {42D518AA-C7A0-47B4-8439-BE2AC16CAD6E} is the component guid of pictrdll.dll (64-bit)-->
+    <!--<InUseCheck Path="{42D518AA-C7A0-47B4-8439-BE2AC16CAD6E}" Condition="None" />-->
+    <!--              {F70BC08C-FE09-4CE2-90BA-A138EC29F768} is the component guid of pigetmsg.exe (64-bit)-->
+    <InUseCheck Path="{F70BC08C-FE09-4CE2-90BA-A138EC29F768}" Condition="None" />
+    <!--              {22D84538-3090-428F-98D5-92B96A97C734} is the component guild of PISDKRegistry.dll (64-bit)-->
+    <InUseCheck Path="{22D84538-3090-428F-98D5-92B96A97C734}" Condition="None" />
+    <!--              {2EE1C2BD-9201-44B0-BA46-BE294193FA33} is the component guid of sdktrace.dll (64-bit)-->
+    <InUseCheck Path="{2EE1C2BD-9201-44B0-BA46-BE294193FA33}" Condition="None" />
+    <Variable Name="PIHOME64" MSIProperty="INSTALLDIR" Condition="None" />
+    <Variable Name="DEFAULTPISERVER" MSIProperty="PI_SERVER" Condition="None" />
+  </Module>
+  <!--        {4EF3B527-049E-4042-94B5-C9E869C740BC} is the upgrade code of AF Client (both x86 and x64)-->
+  <Module Id="{4EF3B527-049E-4042-94B5-C9E869C740BC}">
+    <!--              OSIsoft.AFSDK.dll is a DotNet DLL. The component guid or full path cannot be specified for managed DLLs-->
+    <InUseCheck Path="OSIsoft.AFSDK.dll" Condition="None" />
+    <InUseCheck Path="OSIsoft.AFSDK.ni.dll" Condition="None" />
+    <!--THE FOLLOWING LINES ARE FOR AF 2.6 AND GREATER-->
+    <!--              {01D71F35-B4E1-49A8-8588-E8196D0635B7} is the component guid of PISDKRegistry.dll (32-bit)-->
+    <InUseCheck Path="{01D71F35-B4E1-49A8-8588-E8196D0635B7}" Condition="None" />
+    <!--              {D071A5C5-B373-4A56-8BA1-6ADD624A91E2} is the component guid of sdktrace.dll (32-bit)-->
+    <InUseCheck Path="{D071A5C5-B373-4A56-8BA1-6ADD624A91E2}" Condition="None" />
+    <!--              {22D84538-3090-428F-98D5-92B96A97C734} is the component guid of the PISDKRegistry.dll (64-bit)-->
+    <InUseCheck Path="{22D84538-3090-428F-98D5-92B96A97C734}" Condition="None" />
+    <!--              {2EE1C2BD-9201-44B0-BA46-BE294193FA33} is the component guid of the sdktrace.dll (64-bit)-->
+    <InUseCheck Path="{2EE1C2BD-9201-44B0-BA46-BE294193FA33}" Condition="None" />
+    <!--              {E678FD97-EBB4-4198-AA36-9850E6304B3A} is the component guid of piinterop.dll (32-bit)-->
+    <InUseCheck Path="{E678FD97-EBB4-4198-AA36-9850E6304B3A}" Condition="None" />
+    <!--              {2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF} is the component guid of piinterop.dll (64-bit)-->
+    <InUseCheck Path="{2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF}" Condition="None" />
+    <Variable Name="DEFAULTAFSERVER" MSIProperty="AF_SERVER" Condition="None" />
+    <Variable Name="DEFAULTPISERVER" MSIProperty="PI_SERVER" Condition="None" />
+  </Module>
+  <!--       "{B138E0FC-EABE-44F5-BF22-ECAF965092D0}" is the upgrade code for piApi_x64.msi-->
+  <Module Id="{B138E0FC-EABE-44F5-BF22-ECAF965092D0}">
+    <Service NameMask="bufservX64" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="None" />
+    <Service NameMask="pilogsrvX64" Action="WizardStops_WizardEnusuresStarted" Condition="None" />
+    <!--              {64EE31CE-CC76-4091-9F2C-4442051D92AC} is the component guid of piapi.dll-->
+    <InUseCheck Path="{64EE31CE-CC76-4091-9F2C-4442051D92AC}" Condition="None" />
+    <!--              {AA89EFC3-29AA-4582-BE30-AAA8858BBBDF} is the compoenent guid of apisnap.exe-->
+    <InUseCheck Path="{AA89EFC3-29AA-4582-BE30-AAA8858BBBDF}" Condition="None" />
+    <Variable Name="PIHOME64" MSIProperty="INSTALLDIR" Condition="None" />
+  </Module>
+  <!--        {1F1B5727-9E75-4F6E-8647-DDD888DC52F2} is the upgrade code for the PI Buffer Subsystem setup kit (both x86 and x64) -->
+  <Module Id="{1F1B5727-9E75-4F6E-8647-DDD888DC52F2}">
+    <Service NameMask="pibufss" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="None" />
+    <Service NameMask="bufserv" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="OS32Bit" />
+    <Service NameMask="bufservX64" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="OS64Bit" />
+    <Service NameMask="pilogsrv" Action="WizardStops_WizardEnusuresStarted" Condition="OS32Bit" />
+    <Service NameMask="pilogsrv" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="OS64Bit" />
+    <Service NameMask="pilogsrvX64" Action="WizardStops_WizardEnusuresStarted" Condition="OS64Bit" />
+    <!--               pimsgss always restarted because of pimdf.dat-->
+    <Service NameMask="pimsgss" Action="MSIStops_WizardEnusuresStarted" Condition="None" />
+    <!--              {64EE31CE-CC76-4091-9F2C-4442051D92AC} is the comonent guid of piapi.dll-->
+    <InUseCheck Path="{64EE31CE-CC76-4091-9F2C-4442051D92AC}" Condition="OS64Bit" />
+    <!--              {48211764-E2F6-46E0-9AEF-82F9AE3F076B} is the component guid of BufferingManager.exe-->
+    <InUseCheck Path="{48211764-E2F6-46E0-9AEF-82F9AE3F076B}" Condition="None" />
+    <!--THE FOLLOWING LINES ARE FOR PIBufss 4.7.0 AND GREATER-->
+    <!--              {01D71F35-B4E1-49A8-8588-E8196D0635B7} is the component guid of PISDKRegistry.dll (32-bit)-->
+    <InUseCheck Path="{01D71F35-B4E1-49A8-8588-E8196D0635B7}" Condition="None" />
+    <!--              {D071A5C5-B373-4A56-8BA1-6ADD624A91E2} is the component guid of sdktrace.dll (32-bit)-->
+    <InUseCheck Path="{D071A5C5-B373-4A56-8BA1-6ADD624A91E2}" Condition="None" />
+    <!--              {22D84538-3090-428F-98D5-92B96A97C734} is the component guid of the PISDKRegistry.dll (64-bit)-->
+    <InUseCheck Path="{22D84538-3090-428F-98D5-92B96A97C734}" Condition="None" />
+    <!--              {2EE1C2BD-9201-44B0-BA46-BE294193FA33} is the component guid of the sdktrace.dll (64-bit)-->
+    <InUseCheck Path="{2EE1C2BD-9201-44B0-BA46-BE294193FA33}" Condition="None" />
+    <!--              {E678FD97-EBB4-4198-AA36-9850E6304B3A} is the component guid of piinterop.dll (32-bit)-->
+    <InUseCheck Path="{E678FD97-EBB4-4198-AA36-9850E6304B3A}" Condition="None" />
+    <!--              {2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF} is the component guid of piinterop.dll (64-bit)-->
+    <InUseCheck Path="{2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF}" Condition="None" />
+  </Module>
+  <Module Id="random.msi">
+    <!--              {EDA4D68D-893C-4849-BB7B-2589AC77FBE2} random.exe (the service check will not work if random is running interactively)-->
+    <InUseCheck Path="{EDA4D68D-893C-4849-BB7B-2589AC77FBE2}" Condition="None" />
+  </Module>
+  <!--        {A7FD2B48-3F6A-4804-B46A-5B4BB7BB5455} is the component guid of PI Spt DLL (PISpt)-->
+  <Module Id="{A7FD2B48-3F6A-4804-B46A-5B4BB7BB5455}">
+    <!--              {A9138CB7-07E5-4B49-921A-CD84C70A8CEA} is the comonent guid of PISpt.dll-->
+    <InUseCheck Path="{A9138CB7-07E5-4B49-921A-CD84C70A8CEA}" Condition="None" />
+  </Module>
+  <!--       "{4843F8AB-6948-4FBC-A4B8-26398F66EA65}" is the upgrade code for PIGenericNames DLL (GenericNames)-->
+  <Module Id="{4843F8AB-6948-4FBC-A4B8-26398F66EA65}">
+    <!--              {F8BE1ACF-0076-4375-A4BE-7CC28CB93774} is the component guid of PIGenericNames.dll-->
+    <InUseCheck Path="{F8BE1ACF-0076-4375-A4BE-7CC28CB93774}" Condition="None" />
+  </Module>
+  <!--        {416AA6F2-494A-4C24-A96C-D1EB2D32CFC7} is the upgrade code for the PI Interface Configuration Utility (PI ICU)-->
+  <Module Id="{416AA6F2-494A-4C24-A96C-D1EB2D32CFC7}">
+    <!--     {2226BCC2-92D6-4689-923D-F5CDD2C6B7E2} is the component guid of PIICU.exe-->
+    <InUseCheck Path="{2226BCC2-92D6-4689-923D-F5CDD2C6B7E2}" Condition="None" />
+  </Module>
+  <!--       "{98CEA5B5-7DCE-440A-A26A-2EDC623C576D}" is the upgrade code for pismt3.msi-->
+  <Module Id="{98CEA5B5-7DCE-440A-A26A-2EDC623C576D}">
+    <!--              {027F9B97-E85E-470C-BC59-C11129021EDB} is the component guid of SMTHost.exe-->
+    <InUseCheck Path="{027F9B97-E85E-470C-BC59-C11129021EDB}" Condition="None" />
+    <!--              {945149CB-A798-4E5F-B21B-EB48E345FBF5} is the component guid of PI MDB to AF Preparation Wizard.exe-->
+    <InUseCheck Path="{945149CB-A798-4E5F-B21B-EB48E345FBF5}" Condition="None" />
+    <!--              {523719FB-92E9-4AF9-BC1C-2A76F7CCEBCD} is the component guid of OSIsoft.PISysTray.exe-->
+    <InUseCheck Path="{523719FB-92E9-4AF9-BC1C-2A76F7CCEBCD}" Condition="None" />
+    <!--              {E678FD97-EBB4-4198-AA36-9850E6304B3A} is the component guid of piinterop.dll (32-bit)-->
+    <InUseCheck Path="{E678FD97-EBB4-4198-AA36-9850E6304B3A}" Condition="None" />
+    <!--              {2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF} is the component guid of piinterop.dll (64-bit)-->
+    <InUseCheck Path="{2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF}" Condition="None" />
+  </Module>
+  <!--       "{5D307E41-EC9D-44CF-8D6B-6ED8B1EBBA82}" is the upgrade code for the "Collective Manager.msi"-->
+  <Module Id="{5D307E41-EC9D-44CF-8D6B-6ED8B1EBBA82}">
+    <!--              {9711B932-9CB4-4857-A7F2-1795C2A26A7B} is the component guid of "Collective Manager.exe"-->
+    <InUseCheck Path="{9711B932-9CB4-4857-A7F2-1795C2A26A7B}" Condition="None" />
+    <!--              {E678FD97-EBB4-4198-AA36-9850E6304B3A} is the component guid of piinterop.dll (32-bit)-->
+    <InUseCheck Path="{E678FD97-EBB4-4198-AA36-9850E6304B3A}" Condition="None" />
+    <!--              {2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF} is the component guid of piinterop.dll (64-bit)-->
+    <InUseCheck Path="{2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF}" Condition="None" />
+  </Module>
+  <!--        {7CA24345-FDBB-4A64-895C-225A7837D48E} is the upgrade code for the PI System Directory Publisher (32-bit and 64-bit)-->
+  <Module Id="{7CA24345-FDBB-4A64-895C-225A7837D48E}">
+    <Service NameMask="PIDirectoryPublisher" Action="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" Condition="None" />
+    <!--              {E678FD97-EBB4-4198-AA36-9850E6304B3A} is the component guid of piinterop.dll (32-bit)-->
+    <InUseCheck Path="{E678FD97-EBB4-4198-AA36-9850E6304B3A}" Condition="None" />
+    <!--              {2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF} is the component guid of piinterop.dll (64-bit)-->
+    <InUseCheck Path="{2EFB38AE-2D5B-42C8-A1F2-A9FC5A6959EF}" Condition="None" />
+    <Variable Name="PIDIRECTORYNAME" MSIProperty="PIDIRECTORYNAME" Condition="None" />
+    <Variable Name="PIDIRECTORYURL" MSIProperty="PIDIRECTORYURL" Condition="None" />
+    <Variable Name="INITIALIZEASCREDENTIALSTOREENTRY" MSIProperty="INITIALIZEASCREDENTIALSTOREENTRY" Condition="None" />
+    <Variable Name="PUBLISHASCREDENTIALSTOREENTRY" MSIProperty="PUBLISHASCREDENTIALSTOREENTRY" Condition="None" />
+    <Variable Name="PIDIRECTORYUPDATESETTINGS" MSIProperty="UPDATESETTINGS" Condition="None" />
+  </Module>
+</SetupWizardXml>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SetupWizardXml" nillable="true" type="SetupWizardXml" />
+  <xs:complexType name="SetupWizardXml">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Module" type="ModuleElement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ModuleElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Service" type="ServiceElement" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InUseCheck" type="InUseCheckElement" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Variable" type="VariableElement" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Feature" type="FeatureElement" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ServiceElement">
+    <xs:complexContent mixed="false">
+      <xs:extension base="CommonAttributes">
+        <xs:attribute name="NameMask" type="xs:string" />
+        <xs:attribute name="Action" type="ActionEnum" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CommonAttributes">
+    <xs:attribute name="Condition" type="ConditionEnum" use="required" />
+    <xs:attribute name="ConditionData" type="xs:string" />
+  </xs:complexType>
+  <xs:simpleType name="ConditionEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="OS32Bit" />
+      <xs:enumeration value="OS64Bit" />
+      <xs:enumeration value="PINSNode" />
+      <xs:enumeration value="ComponentInstalled" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="VariableElement">
+    <xs:complexContent mixed="false">
+      <xs:extension base="CommonAttributes">
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attribute name="MSIProperty" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InUseCheckElement">
+    <xs:complexContent mixed="false">
+      <xs:extension base="CommonAttributes">
+        <xs:attribute name="Path" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="ActionEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MSIStops_WizardEnusuresStarted" />
+      <xs:enumeration value="WizardStops_WizardEnusuresStarted" />
+      <xs:enumeration value="WizardStops_WizardEnusuresStartedIfRunningBeforeInstall" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="FeatureElement">
+    <xs:attribute name="Name" type="FeatureEnum" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="FeatureEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ReadOnlyUniInt" />
+      <xs:enumeration value="ReadWriteUniInt" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
