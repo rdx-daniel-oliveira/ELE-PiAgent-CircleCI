@@ -2,6 +2,7 @@
 using OSIsoft.AF.PI;
 using OSIsoftPIAgentSOW.Models;
 using OSIsoftPIAgentSOW.Repositories.Interfaces;
+using OSIsoftPIAgentSOW.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -98,56 +99,60 @@ namespace OSIsoftPIAgentSOW.Repositories.Implementations
             StringBuilder bufferOutput = new StringBuilder();
             int count = 0;
 
+            piAttributeDefinition = RemovePiPointNameFromAttributeDefinition(piAttributeDefinition);
+
+            //PIMetrics.MetricsTicker piMetrics = PIMetrics.MetricsTicker.StartNew(_piServer);
+
             // create an attribute list from PIAttributeDefinition parameter
             string[] _desiredAttributeList = piAttributeDefinition.Split(',');
             bool pointsFound = false;
             try
             {
                 //create the CSV header
-                bufferOutput.AppendLine(piAttributeDefinition);
+                bufferOutput.AppendLine(String.Format("Name,{0}", piAttributeDefinition));
 
                 //Get Points from PI
                 IEnumerable<PIPoint> piPoints = PIPoint.FindPIPoints(_piServer, "*", null, null);
 
-                using (var sequencePoints = piPoints.GetEnumerator())
+                PIPointList piPointList = new PIPointList(piPoints);
+
+                // Bulk Load PiPoint Attributes
+                piPointList.LoadAttributes(_desiredAttributeList);
+
+                if (piPointList.Count > 0)
                 {
-                    while (sequencePoints.MoveNext())
+                    // used to verify if points where found
+                    pointsFound = true;
+                }
+
+                foreach (PIPoint piPoint in piPointList)
+                {
+                    StringBuilder lineOfPoints = new StringBuilder("");
+
+                    IDictionary<string, object> dicPoint = piPoint.GetAttributes(_desiredAttributeList);
+
+                    //check if desired the attributes have been retrieved in the current point
+                    // if yes, add it to the line to be appended to the CSV
+
+                    foreach (string attribute in _desiredAttributeList)
                     {
-                        if (!pointsFound)
+                        if (dicPoint.ContainsKey(attribute))
                         {
-                            // used to verify if points where found
-                            pointsFound = true;
+                            lineOfPoints.AppendFormat("{0}{1}", piPoint.GetAttribute(attribute), ",");
                         }
-
-                        PIPoint piPoint = sequencePoints.Current;
-                        StringBuilder lineOfPoints = new StringBuilder("");
-
-                        //try to get the desired attributes
-                        piPoint.LoadAttributes(_desiredAttributeList);
-                        IDictionary<string, object> dicPoint = piPoint.GetAttributes(_desiredAttributeList);
-
-                        //check if desired the attributes have been retrieved in the current point
-                        // if yes, add it to the line to be appended to the CSV
-                        foreach (string attribute in _desiredAttributeList)
+                        else
                         {
-                            if (dicPoint.ContainsKey(attribute))
-                            {
-                                lineOfPoints.AppendFormat("{0}{1}", piPoint.GetAttribute(attribute), "," );
-                            }
-                            else
-                            {
-                                lineOfPoints.Append(",");
-                            }
+                            lineOfPoints.Append(",");
                         }
-                        if (count % 100 == 0)
-                        {   //log every 100th line of information
-                            _logHelper.LogInformation(string.Format("{0} Retrieved {1} points so far...", DateTime.Now, (count+1).ToString() ));
-                        }
-                        count++;
-                        string line = lineOfPoints.ToString();
-                        //remove extra comma and appned to CSV string
-                        bufferOutput.AppendLine(line.Substring(0, line.Length-1));
                     }
+                    if (count % 500 == 0)
+                    {   //log every 500th line of information
+                        _logHelper.LogInformation(string.Format("{0} Retrieved {1} points so far...", DateTime.Now, (count + 1).ToString()));
+                    }
+                    count++;
+                    string line = String.Format("{0},{1}", piPoint.Name, lineOfPoints.ToString());
+                    //remove extra comma and appned to CSV string
+                    bufferOutput.AppendLine(line.Substring(0, line.Length - 1));
                 }
             }
             catch (Exception configException)
@@ -167,6 +172,52 @@ namespace OSIsoftPIAgentSOW.Repositories.Implementations
                 return "";
             }
             
+        }
+
+        /// <summary>
+        /// Remove PiPoint name from the Attribute Definition list, since PiPoint name is not an attribute
+        /// it is a PiPoint class property
+        /// </summary>
+        private string RemovePiPointNameFromAttributeDefinition(string piAttributeDefinition)
+        {
+            string newPiAttributeDefinition = piAttributeDefinition.ToLower();
+
+            if (newPiAttributeDefinition.Contains("name"))
+            {
+                int indexToCheck;
+                int indexOfName = newPiAttributeDefinition.IndexOf("name");
+                char[] arrayOfChars = newPiAttributeDefinition.ToCharArray();
+                indexToCheck = (indexOfName + 4) > (newPiAttributeDefinition.Length - 1)
+                        ? newPiAttributeDefinition.Length - 1
+                        : indexOfName + 4;
+                char charAfterNameInAttrDefinition = arrayOfChars[indexToCheck];
+                bool thereIsACommaAfterName = charAfterNameInAttrDefinition == ',';
+
+                if (thereIsACommaAfterName)
+                {
+                    newPiAttributeDefinition = newPiAttributeDefinition.Replace("name,", "");
+                }
+                else
+                {
+                    indexToCheck = (indexOfName - 1) < 0
+                        ? 0
+                        : indexOfName - 1;
+                    char charBeforeNameInAttrDefinition = arrayOfChars[indexToCheck];
+                    bool thereIsACommaBeforeName = charBeforeNameInAttrDefinition == ',';
+
+                    if (thereIsACommaBeforeName)
+                    {
+                        newPiAttributeDefinition = newPiAttributeDefinition.Replace(",name", "");
+                    }
+                    else
+                    {
+                        newPiAttributeDefinition = newPiAttributeDefinition.Replace("name", "");
+                    }
+
+                }
+
+            }
+            return newPiAttributeDefinition;
         }
 
         /// <summary>

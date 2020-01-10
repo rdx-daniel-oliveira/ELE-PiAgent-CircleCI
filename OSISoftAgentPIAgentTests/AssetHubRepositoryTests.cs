@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OSIsoftPIAgentSOW.Repositories.Implementations;
+using OSIsoftPIAgentSOW.Utils.Implementations;
+using OSIsoftPIAgentSOW.Utils.Interfaces;
+
 using System;
 using Xunit;
 
@@ -10,7 +13,9 @@ namespace OSISoftAgentPIAgentTests
     {
         private ILogger<AssetHubRepository> _logAssetHub;
         private ILogger<ConfigurationRepository> _logConfiguration;
+        private ILogger<HttpHelper> _logHttp;
 
+        private IHttpHelper _httpHelper;
         public AssetHubRepositoryTests()
         {
             var serviceProvider = new ServiceCollection()
@@ -20,6 +25,9 @@ namespace OSISoftAgentPIAgentTests
             var factory = serviceProvider.GetService<ILoggerFactory>();
             _logAssetHub = factory.CreateLogger<AssetHubRepository>();
             _logConfiguration = factory.CreateLogger<ConfigurationRepository>();
+            _logHttp = factory.CreateLogger<HttpHelper>();
+
+            _httpHelper = new HttpHelper(_logHttp);
         }
 
         /// <summary>
@@ -36,7 +44,7 @@ namespace OSISoftAgentPIAgentTests
 
             if (configurationRepository.GetConfiguration())
             {
-                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub);
+                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub, _httpHelper);
                 Assert.True(assetHubRepository.GetToken(configurationRepository.EUser, configurationRepository.EPassword, configurationRepository.EBaseUrl).Result);
             }
             else
@@ -59,14 +67,26 @@ namespace OSISoftAgentPIAgentTests
 
             if (configurationRepository.GetConfiguration())
             {
-                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub);
-                if (assetHubRepository.GetToken(configurationRepository.EUser, configurationRepository.EPassword, configurationRepository.EBaseUrl).Result)
+                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub, _httpHelper);
+
+                bool assetHubTokenOk;
+
+                if (!string.IsNullOrEmpty(configurationRepository.EStaticToken))
+                {
+                    assetHubRepository.SetToken(configurationRepository.EStaticToken);
+                    assetHubTokenOk = true;
+                }
+                else
+                {
+                    assetHubTokenOk = assetHubRepository.GetToken(configurationRepository.EUser, configurationRepository.EPassword, configurationRepository.EBaseUrl).Result;
+                }
+                if (assetHubTokenOk)
                 {
                     //mock PI data
                     string piData = @"name,pointsource,description,digitalset,engunits,exdesc,future,pointtype,ptclassname,sourcetag,archiving,compressing,span,step,zero,changedate,changer,creationdate,creator,pointid,instrumentag
 ,L,,,,,0,Float64,base,,1,1,100,0,0,01/07/2019 18:30:25,RDXPISANDBOX\zachary.burke,01/07/2019 18:30:25,RDXPISANDBOX\zachary.burke,887,";
-                    string fileName =  string.Format("{0}.csv", DateTime.Now.ToString("yyyyMMddHHmmss"));
-                    Assert.True(assetHubRepository.StageFile(fileName, piData, configurationRepository.EBaseUrl, configurationRepository.EOrgID, configurationRepository.EDatasetID).Result);
+                    string fileName = string.Format("{0}.csv", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    Assert.True(assetHubRepository.StageFile(fileName, piData, configurationRepository.EBaseUrl, configurationRepository.EOrgID).Result);
                 }
                 else
                 {
@@ -92,22 +112,22 @@ namespace OSISoftAgentPIAgentTests
 
             if (configurationRepository.GetConfiguration())
             {
-                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub);
-                if (assetHubRepository.GetToken(configurationRepository.EUser, configurationRepository.EPassword, configurationRepository.EBaseUrl).Result)
+                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub, _httpHelper);
+
+                bool assetHubTokenOk;
+
+                if (!string.IsNullOrEmpty(configurationRepository.EStaticToken))
                 {
-                    //mock PI data
-                    string piData = @"name,pointsource,description,digitalset,engunits,exdesc,future,pointtype,ptclassname,sourcetag,archiving,compressing,span,step,zero,changedate,changer,creationdate,creator,pointid,instrumentag
-,L,,,,,0,Float64,base,,1,1,100,0,0,01/07/2019 18:30:25,RDXPISANDBOX\zachary.burke,01/07/2019 18:30:25,RDXPISANDBOX\zachary.burke,887,";
-                    string fileName = string.Format("{0}.csv", DateTime.Now.ToString("yyyyMMddHHmmss"));
-                    if (assetHubRepository.StageFile(fileName, piData, configurationRepository.EBaseUrl, configurationRepository.EOrgID, configurationRepository.EDatasetID).Result)
-                    {
-                        Assert.True(assetHubRepository.CommitData(configurationRepository.EBaseUrl, configurationRepository.EOrgID, configurationRepository.EDatasetID).Result);
-                    }
-                    else
-                    {
-                        Assert.True(false, "error staging file");
-                    }
-                
+                    assetHubRepository.SetToken(configurationRepository.EStaticToken);
+                    assetHubTokenOk = true;
+                }
+                else
+                {
+                    assetHubTokenOk = assetHubRepository.GetToken(configurationRepository.EUser, configurationRepository.EPassword, configurationRepository.EBaseUrl).Result;
+                }
+                if (assetHubTokenOk)
+                {
+                    Assert.True(assetHubRepository.CommitData(configurationRepository.EBaseUrl, configurationRepository.EOrgID, configurationRepository.EDatasetID, "DummyFileName").Result);
                 }
                 else
                 {

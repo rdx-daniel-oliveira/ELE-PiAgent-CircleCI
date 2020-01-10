@@ -15,7 +15,7 @@ namespace OSIsoftPIAgentSOW.Repositories.Interfaces
         int EAgentIntervaMin { get; set; }
         int EAgentIntervaMiliSec { get; set; }
         string EBaseUrl { get; set; }
-
+        string EStaticToken { get; set; }
         bool GetConfiguration();
 
     }

@@ -19,8 +19,10 @@ RUN "[Environment]::SetEnvironmentVariable('E_PASSWORD','R@dix.Rocks19',[Environ
 RUN "[Environment]::SetEnvironmentVariable('E_ORG_ID','1',[EnvironmentVariableTarget]::Machine)"
 RUN "[Environment]::SetEnvironmentVariable('E_DATASET_ID','1',[EnvironmentVariableTarget]::Machine)"
 RUN "[Environment]::SetEnvironmentVariable('E_AGENT_INTERVAL_MIN','1',[EnvironmentVariableTarget]::Machine)"
-RUN "[Environment]::SetEnvironmentVariable('E_BASE_URL','http://localhost:8080/datasets/v1/',[EnvironmentVariableTarget]::Machine)"
+RUN "[Environment]::SetEnvironmentVariable('E_BASE_URL','https://evergreening.ean.io/datasets/v1/',[EnvironmentVariableTarget]::Machine)"
 RUN "[Environment]::SetEnvironmentVariable('PI_ATTRIBUTE_DEFINITION','name,pointsource,description,digitalset,engunits,exdesc,future,pointtype,ptclassname,sourcetag,archiving,compressing,span,step,zero,changedate,changer,creationdate,creator,pointid,instrumentag',[EnvironmentVariableTarget]::Machine)"
+RUN "[Environment]::SetEnvironmentVariable('E_STATIC_TOKEN','bold-restaurant-motor',[EnvironmentVariableTarget]::Machine)"
+
 
 # Run PI Agent as a console application
-RUN Start-Process deploy\OSIsoftPIAgentSOW.exe
+ENTRYPOINT ["deploy\\OSIsoftPIAgentSOW.exe"]

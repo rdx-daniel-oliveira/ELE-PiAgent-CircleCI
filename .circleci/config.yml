@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@1.0.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+      shell: powershell
+      
+    steps:
+      - checkout
+      - run:
+          name: Install AF SDK
+          command: Start-Process ".\\AFClient_2.10.7.283\\Setup.exe" -ArgumentList "/f","AFClient_2.10.7.283\\silent.ini" -NoNewWindow -Wait 
+      - run:
+          name: Add Environment Variables
+          command: AddEnvironmentVariablesCircleCI.ps1
+      - run:
+          name: Run build command to local
+          command: MSBuild .\OsisoftPIAgentSOW.sln  -t:Rebuild -p:Configuration=Release -p:outputdir=.\deploy\   
+      - run:
+          name: Run Application
+          command: .\deploy\OSIsoftPIAgentSOW.exe"
+          
+          
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build

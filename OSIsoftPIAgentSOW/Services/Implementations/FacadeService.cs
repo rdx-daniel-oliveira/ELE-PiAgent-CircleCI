@@ -49,12 +49,14 @@ namespace OSIsoftPIAgentSOW.Services.Implementations
                 if (_configRepository.GetConfiguration())
                 {
                     _logHelper.LogInformation(string.Format("{0} Configurations loaded", DateTime.Now));
-                    
-                    Timer aTimer = new Timer(_configRepository.EAgentIntervaMiliSec);
-                    aTimer.Elapsed += TimerHandler;
-                    aTimer.AutoReset = true;
-                    aTimer.Enabled = true;
-                   
+
+                      Timer aTimer = new Timer(_configRepository.EAgentIntervaMiliSec);
+                      aTimer.Elapsed += TimerHandler;
+                      aTimer.AutoReset = true;
+                      aTimer.Enabled = true;
+                     
+                   // DoTransfer();
+
                     _logHelper.LogInformation(string.Format("{0} Timer created with {1} miliseconds interval. Waiting trigger...", DateTime.Now, _configRepository.EAgentIntervaMiliSec));
                     setupOk = true;
                 }
@@ -122,19 +124,31 @@ namespace OSIsoftPIAgentSOW.Services.Implementations
                         {
 
                             _logHelper.LogInformation(string.Format("{0} Getting token from asset hub", DateTime.Now));
+
                             // try to connect to assethub
-                            if (_assetHubRepository.GetToken(_configRepository.EUser, _configRepository.EPassword, _configRepository.EBaseUrl).Result)
+                            bool assetHubTokenOk;
+
+                            if (!string.IsNullOrEmpty(_configRepository.EStaticToken))
+                            {
+                                _assetHubRepository.SetToken(_configRepository.EStaticToken);
+                                assetHubTokenOk = true;
+                            }
+                            else
+                            {
+                                assetHubTokenOk = _assetHubRepository.GetToken(_configRepository.EUser, _configRepository.EPassword, _configRepository.EBaseUrl).Result;
+                            }
+                            if (assetHubTokenOk)
                             {
                                 // try to upload the file
 
                                 _logHelper.LogInformation(string.Format ("{0} Token OK. Uploading data to asset hub ", DateTime.Now));
 
                                 string fileName = string.Format("{0}.csv", DateTime.Now.ToString("yyyyMMddHHmmss"));
-                                if (_assetHubRepository.StageFile(fileName, piData, _configRepository.EBaseUrl, _configRepository.EOrgID, _configRepository.EDatasetID).Result)
+                                if (_assetHubRepository.StageFile(fileName, piData, _configRepository.EBaseUrl, _configRepository.EOrgID).Result)
                                 {
                                     _logHelper.LogInformation(string.Format("{0} Upload OK. Committing data in asset hub", DateTime.Now));
                                     // try to commit 
-                                    if (_assetHubRepository.CommitData(_configRepository.EBaseUrl, _configRepository.EOrgID, _configRepository.EDatasetID).Result)
+                                    if (_assetHubRepository.CommitData(_configRepository.EBaseUrl, _configRepository.EOrgID, _configRepository.EDatasetID, fileName).Result)
                                     {
                                         transferCompletedWithSuccess = true;
                                         _logHelper.LogInformation(string.Format("{0} Commit OK", DateTime.Now));

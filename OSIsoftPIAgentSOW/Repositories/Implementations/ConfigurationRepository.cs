@@ -19,6 +19,7 @@ namespace OSIsoftPIAgentSOW.Repositories.Implementations
         public int EAgentIntervaMin { get; set; }
         public int EAgentIntervaMiliSec { get; set; }
         public string EBaseUrl { get; set; }
+        public string EStaticToken { get; set; }
 
         private readonly ILogger _logHelper;
 
@@ -79,6 +80,7 @@ namespace OSIsoftPIAgentSOW.Repositories.Implementations
                 this.EAgentIntervaMiliSec = EAgentIntervaMin * 60 * 1000;
             }
             this.EBaseUrl = GetEnvironmentVariable("E_BASE_URL");
+            this.EStaticToken = GetEnvironmentVariable("E_STATIC_TOKEN");
         }
 
         private void GetParamsFromFile(string fileName)
@@ -108,6 +110,7 @@ namespace OSIsoftPIAgentSOW.Repositories.Implementations
             this.EAgentIntervaMin = int.Parse(settings["E_AGENT_INTERVAL_MIN"]);
             this.EAgentIntervaMiliSec = EAgentIntervaMin * 60 * 1000;
             this.EBaseUrl = settings["E_BASE_URL"];
+            this.EStaticToken = settings["E_STATIC_TOKEN"];
         }
 
         private string TestConfiguration()

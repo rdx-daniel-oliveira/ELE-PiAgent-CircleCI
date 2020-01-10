@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using OSIsoftPIAgentSOW.Repositories.Implementations;
 using OSIsoftPIAgentSOW.Services.Implementations;
+using OSIsoftPIAgentSOW.Utils.Implementations;
+using OSIsoftPIAgentSOW.Utils.Interfaces;
 using System;
 using Xunit;
 
@@ -13,6 +15,8 @@ namespace OSISoftAgentPIAgentTests
         private ILogger<ConfigurationRepository> _logConfiguration;
         private ILogger<PIRepository> _logPI;
         private ILogger<FacadeService> _logFacadeService;
+        private ILogger<HttpHelper> _logHttp;
+        private IHttpHelper _httpHelper;
 
         public IntegrationTests()
         {
@@ -26,6 +30,9 @@ namespace OSISoftAgentPIAgentTests
             _logConfiguration = factory.CreateLogger<ConfigurationRepository>();
             _logAssetHub = factory.CreateLogger<AssetHubRepository>();
             _logFacadeService = factory.CreateLogger<FacadeService>();
+            _logHttp = factory.CreateLogger<HttpHelper>();
+
+            _httpHelper = new HttpHelper(_logHttp);
         }
 
         /// <summary>
@@ -42,7 +49,7 @@ namespace OSISoftAgentPIAgentTests
 
             if (configurationRepository.GetConfiguration())
             {
-                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub);
+                AssetHubRepository assetHubRepository = new AssetHubRepository(_logAssetHub, _httpHelper);
                 PIRepository piRespository = new PIRepository(_logPI);
                 FacadeService facadeService = new FacadeService(configurationRepository, assetHubRepository, piRespository, _logFacadeService);
                 Assert.True(facadeService.DoTransfer());

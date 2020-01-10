@@ -1,144 +1,117 @@
-﻿using OSIsoftPIAgentSOW.Models;
+﻿using Microsoft.Extensions.Logging;
+using OSIsoftPIAgentSOW.Models;
 using OSIsoftPIAgentSOW.Repositories.Interfaces;
+using OSIsoftPIAgentSOW.Utils.Interfaces;
 using System;
-using Microsoft.Extensions.Logging;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
-using System.IO;
+using System.Threading.Tasks;
 
 namespace OSIsoftPIAgentSOW.Repositories.Implementations
 {
     public class AssetHubRepository : IAssetHubRepository
     {
         private readonly ILogger _logHelper;
-
         private AssetHubToken _token;
-        private readonly HttpClient _client;
+        private string _groupID;
+        private IHttpHelper _httpHelper;
 
-        public AssetHubRepository(ILogger<AssetHubRepository> logHelper)
+        public AssetHubRepository(ILogger<AssetHubRepository> logHelper, IHttpHelper httpHelper)
         {
-           _logHelper = logHelper;
-            _client = new HttpClient();
+            _logHelper = logHelper;
+            _groupID = "";
+            _httpHelper = httpHelper;
+        }
+
+        public void SetToken(string token)
+        {
+            _token = new AssetHubToken();
+            _token.authToken = token;
         }
 
         public async Task<bool> GetToken(string eUser, string ePassword, string eBaseUrl)
         {
             bool tokenOK = false;
-            _token = new AssetHubToken();
-            string serverReturn = "";
+            string postUrl = "";
 
             try
             {
                 string credentials = "{{\"email\": \"{0}\",\"password\":\"{1}\"}}";
+                postUrl = (string.Format("{0}sessions", eBaseUrl));
 
-                HttpContent httpContent = new StringContent(string.Format(credentials, eUser, ePassword), Encoding.UTF8, "application/json");
+                Dictionary<string, string> requestHeaders = new Dictionary<string, string>();
 
-                _client.DefaultRequestHeaders.Clear();
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                HttpResponseMessage response = await _client.PostAsync(string.Format("{0}sessions", eBaseUrl), httpContent);
-
-                serverReturn = await response.Content.ReadAsStringAsync();
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    _token = JsonConvert.DeserializeObject<AssetHubToken>(serverReturn.Trim());
-                    tokenOK = true;
-                }
-                else
-                {
-                    if (response.StatusCode != HttpStatusCode.NotFound)
-                    {
-                        _logHelper.LogError(string.Format("{0} AssetHub.GetToken StatusCode {1} ServerReturn {2}", DateTime.Now, response.StatusCode.ToString(),serverReturn));
-                    }
-                }
-
+                tokenOK = await _httpHelper.SendCommandToAssetHub(postUrl, "application/json; charset=UTF-8", "application/json", credentials, requestHeaders, HttpStatusCode.OK);
             }
+            
             catch (Exception configException)
             {
-               _logHelper.LogError(configException, string.Format("{0}  AssetHub.GetToken username {1}, Server return {2}", DateTime.Now, eUser, serverReturn));
+                _logHelper.LogError(configException, string.Format("{0}  AssetHub.GetToken username {1}, EPostUrl {2}", DateTime.Now, eUser, postUrl));
             }
 
             return tokenOK;
         }
 
-       
-        public async Task<bool> StageFile(string filename, string dataContent, string eBaseUrl, string eOrgID, string eDatasetID)
+      
+        public async Task<bool> StageFile(string filename, string dataContent, string eBaseUrl, string eOrgID)
         {
             bool postOK = false;
+            string postUrl = "";
+
+           _groupID = "";
 
             try
             {
-                _client.DefaultRequestHeaders.Clear();
-                _client.DefaultRequestHeaders.Add("x-auth-token", _token.authToken);
-             // _client.DefaultRequestHeaders.Add("xOrganizationId", eOrgID);
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                postUrl = string.Format("{0}stage/file?name={1}&format=csv&convertToParquet=false", eBaseUrl, filename);
+                Dictionary<string, string> requestHeaders = new Dictionary<string, string>();
+                requestHeaders.Add("x-auth-token", _token.authToken);
+                requestHeaders.Add("x-organization-id", eOrgID);
 
+                postOK = await _httpHelper.SendCommandToAssetHub(postUrl, "application/octet-stream", "", dataContent, requestHeaders, HttpStatusCode.OK);
 
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, string.Format("{0}stage/file?name={1}&format=csv&convertToParquet=true&groupId=1", eBaseUrl, filename));
-                request.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(dataContent));
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                request.Content.Headers.Add("xOrganizationId", eOrgID);
-
-                HttpResponseMessage response = await _client.SendAsync(request);
-                string serverReturn = await response.Content.ReadAsStringAsync();
-
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (postOK)
                 {
-                    postOK = true;
-                }
-                else
-                {
-                    _logHelper.LogError(string.Format("{0} AssetHub.StageFile StatusCode {1} ServerReturn {2}", DateTime.Now, response.StatusCode.ToString(), serverReturn));
+                    _groupID = _httpHelper.ServerReturn;
                 }
             }
+           
             catch (Exception configException)
             {
-                _logHelper.LogError(configException, String.Format("{0} AssetHub.StageFile EPostUrl {1} eOrgID {2} eDatasetID {3}", DateTime.Now, eBaseUrl, eOrgID, eDatasetID));
+                _logHelper.LogError(configException, String.Format("{0} AssetHub.StageFile EPostUrl {1} eOrgID {2} ", DateTime.Now, postUrl, eOrgID));
             }
 
             return postOK;
         }
 
-        public async Task<bool> CommitData(string eBaseUrl, string eOrgID, string eDatasetID)
+
+     
+
+        public async Task<bool> CommitData(string eBaseUrl, string eOrgID, string eDatasetID, string fileName)
         {
             bool commitOK = false;
-          
+            string commitCommand = "";
+            string postUrl = "";
+
             try
             {
-                string commitCommand = "{\"commands\":[{}]}";
+               commitCommand = string.Format("{{ \"commands\": [ {{ \"$type\": \"append\", \"name\": \"{0}\", \"group\": \"{1}\",\"cause\": []  }}] }}", fileName, _groupID);
+                               
+                postUrl = string.Format("{0}dataset/{1}/commit", eBaseUrl, eDatasetID);
 
-                _client.DefaultRequestHeaders.Clear();
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                _client.DefaultRequestHeaders.Add("x-auth-token", _token.authToken);
-                _client.DefaultRequestHeaders.Add("xOrganizationId", eOrgID);
+                Dictionary<string, string> requestHeaders = new Dictionary<string, string>();
+                requestHeaders.Add("x-auth-token", _token.authToken);
+                requestHeaders.Add("x-organization-id", eOrgID);
 
-                HttpContent httpContent = new StringContent(commitCommand, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _client.PostAsync(string.Format("{0}dataset/{1}/commit", eBaseUrl, eDatasetID), httpContent);
+                commitOK = await _httpHelper.SendCommandToAssetHub(postUrl, "application/json; charset=UTF-8", "application/json", commitCommand, requestHeaders, HttpStatusCode.Accepted);
 
-                string serverReturn = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == (HttpStatusCode)202)
-                {
-                    commitOK = true;
-                }
-                else
-                {
-                    _logHelper.LogError(string.Format("{0} AssetHub.CommitData StatusCode {1} ServerReturn {2}", DateTime.Now, response.StatusCode.ToString(), serverReturn));
-                }
-              
             }
             catch (Exception configException)
             {
-               _logHelper.LogError(configException, String.Format("{0} AssetHub.CommitData eCommitUrl {1} dataset {2} eOrgID {3}", DateTime.Now, eBaseUrl, eDatasetID, eOrgID));
+                _logHelper.LogError(configException, String.Format("{0} AssetHub.CommitData EPostUrl {1} dataset {2} eOrgID {3} Commit Command {4}", DateTime.Now, postUrl, eDatasetID, eOrgID, commitCommand));
             }
 
             return commitOK;
         }
+  
     }
 }

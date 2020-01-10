@@ -22,10 +22,10 @@ obj/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-[Dd]eploy/*.xml
-[Dd]eploy/*.config
 [Dd]eploy/*.dll
 [Dd]eploy/*.exe
+[Dd]eploy/*.xml
+[Dd]eploy/*.config
 [Dd]eploy/*.json
 
 # Visual Studio 2015 cache/options directory

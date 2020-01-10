@@ -2,14 +2,15 @@
   
 ## Disclaimer
   
-This README will be completed in the following days
+This README is a work in progress.
 
 ## Configuration
 
-We added two parameters:
+We've added three parameters:
 
-1. E_BASE_URL (base url for Asset Hub api) 
-2. PI_ATTRIBUTE_DEFINITION (a list of comma separated attribute names, used to retrive points info from a PI data archive)
+1. E_BASE_URL (base URL for Asset Hub api) 
+2. PI_ATTRIBUTE_DEFINITION (a list of comma separated attribute names, used to retrieve points info from a PI data archive)
+3. E_STATIC_TOKEN (fixed static token to access asset hub api, to be used in dev environments)
 
 Example:
 "name,pointsource,description,digitalset,engunits,exdesc,future,pointtype,ptclassname,sourcetag,archiving,compressing,span,step,zero,changedate,changer,creationdate,creator,pointid,instrumentag"
@@ -26,7 +27,4 @@ The unit tests sets the environment variables. Invalid parameter values can brea
 
 ## Architecture
 
-This is a console application. To mimic a windows service, i.e., to stay loaded in memory, it waits for an input to exit (control-c), provided all mandatory parameters are provided. If they are not, it just writes a message to console ("Hello world"), in order to fullfill the Circle CI build test, and exits.
-
-
-
+This is a console application. To mimic a windows service, i.e., to stay loaded in memory, it waits for an input to exit (control-c), provided all mandatory parameters are provided. If they are not, it just writes a message to console ("Hello world"), in order to fulfill the Circle CI build test, and exits.

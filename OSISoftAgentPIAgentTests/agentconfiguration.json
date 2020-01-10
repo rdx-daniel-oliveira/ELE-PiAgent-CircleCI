@@ -3,12 +3,13 @@
     "PI_DATA_ARCHIVE_NAME": "radixuspisandbox-centralpiserver.southcentralus.cloudapp.azure.com",
     "PI_USER": "rdxpisandbox\\sergio.treiger",
     "PI_PASSWORD": "MooseT4nk",
-    "E_USER": "ben.perez@radixeng.com",
-    "E_PASSWORD": "R@dix.Rocks19",
-    "E_ORG_ID": "1",
-    "E_DATASET_ID": "1",
+    "E_USER": "test",
+    "E_PASSWORD": "test",
+    "E_ORG_ID": "34",
+    "E_DATASET_ID": "1155eb4b-de63-4a5c-a5b8-1c1a358f2e8e",
     "E_AGENT_INTERVAL_MIN": "1",
-    "E_BASE_URL": "http://localhost:8080/datasets/v1/",
+    "E_BASE_URL": "https://evergreening.ean.io/datasets/v1/",
+    "E_STATIC_TOKEN": "bold-restaurant-motor",
     "PI_ATTRIBUTE_DEFINITION": "name,pointsource,description,digitalset,engunits,exdesc,future,pointtype,ptclassname,sourcetag,archiving,compressing,span,step,zero,changedate,changer,creationdate,creator,pointid,instrumentag"
   }
 }

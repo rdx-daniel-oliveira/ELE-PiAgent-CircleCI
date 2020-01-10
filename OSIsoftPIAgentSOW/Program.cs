@@ -5,6 +5,9 @@ using OSIsoftPIAgentSOW.Repositories.Implementations;
 using OSIsoftPIAgentSOW.Repositories.Interfaces;
 using OSIsoftPIAgentSOW.Services.Implementations;
 using OSIsoftPIAgentSOW.Services.Interfaces;
+using OSIsoftPIAgentSOW.Utils.Implementations;
+using OSIsoftPIAgentSOW.Utils.Interfaces;
+
 using System;
 using System.Threading;
 
@@ -25,6 +28,7 @@ namespace OSIsoftPIAgentSOW
             IConfigurationRoot configuration = configurationBuilder.Build();
 
             var collection = new ServiceCollection();
+            collection.AddScoped<IHttpHelper, HttpHelper>();
             collection.AddScoped<IConfigurationRepository, ConfigurationRepository>();
             collection.AddScoped<IAssetHubRepository, AssetHubRepository>();
             collection.AddScoped<IPIRepository, PIRepository>();
@@ -42,7 +46,8 @@ namespace OSIsoftPIAgentSOW
                  //Call the service facade that will orchestrate the process 
                 Console.WriteLine("Agent started. Press control-c to end");
 
-                var service = serviceProvider.GetService<IFacadeService>();
+                IFacadeService service = serviceProvider.GetService<IFacadeService>();
+                
                 if (service.SetUp())
                 {
                     //wait for input to exit. This is a way to run this application "as a service" in a container

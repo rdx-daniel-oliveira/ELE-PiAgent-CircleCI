@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -37,6 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -157,6 +158,9 @@
     <Compile Include="Repositories\Interfaces\IPIRepository.cs" />
     <Compile Include="Services\Implementations\FacadeService.cs" />
     <Compile Include="Services\Interfaces\IFacadeService.cs" />
+    <Compile Include="Utils\Implementations\HttpHelper.cs" />
+    <Compile Include="Utils\Interfaces\IHttpHelper.cs" />
+    <Compile Include="Utils\PIMetrics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">
