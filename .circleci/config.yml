@@ -13,7 +13,9 @@ jobs:
       - checkout
       - run:
           name: Install AF SDK
-          command: Start-Process ".\\AFClient_2.10.7.283\\Setup.exe" -ArgumentList "/f","AFClient_2.10.7.283\\silent.ini" -NoNewWindow -Wait 
+          # command: Start-Process ".\\AFClient_2.10.7.283\\Setup.exe" -ArgumentList "/f","AFClient_2.10.7.283\\silent.ini" -NoNewWindow -Wait 
+          command: Start-Process -FilePath ".\AFClient_2.10.7.283\Setup.exe" -ArgumentList "/f", ".\AFClient_2.10.7.283\silent.ini" -Wait
+
       - run:
           name: Add Environment Variables
           command: AddEnvironmentVariablesCircleCI.ps1
